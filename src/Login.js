@@ -29,12 +29,15 @@ export default class extends Component {
     }
     return (
       <Paper>
-        <form>
+        <form onSubmit={handleClick}>
           <label for="idField">{this.state.idHolder}:</label>
           <input name="idField"
                  type="text"
                  placeholder={this.state.idHolder}
-                 onChange={handleIDChange}/>
+                 onChange={handleIDChange}
+                 required
+                 pattern="\d"
+          />
           <br/>
           <label for="confirm">{this.state.confirmHolder}:</label>
           <input name="confirm"
@@ -43,7 +46,7 @@ export default class extends Component {
                  onChange={handleConfirmChange}/>
           <br/>
           <RaisedButton label={this.state.buttonText}
-                        onClick={handleClick}/>
+                        type="Submit"/>
         </form>
       </Paper>
     )
