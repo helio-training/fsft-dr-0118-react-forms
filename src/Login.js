@@ -10,8 +10,10 @@ export default class extends Component {
       idHolder: this.props.idHolder,
       confirmHolder: this.props.confirmHolder,
       buttonText: this.props.buttonText,
+      submitFunc: this.props.submitFunc,
       idValue: '',
-      confirmValue: ''
+      confirmValue: '',
+      errorMsg: ''
     }
     
     
@@ -20,21 +22,30 @@ export default class extends Component {
   render() {
     const handleIDChange = (event) => {
       this.setState({ idValue: event.target.value })
+      if (this.state.idValue.length >= 20) {
+        this.setState({ errorMsg: 'Your Username is too long' })
+      }
+      else if (this.state.idValue.length <= 8) {
+        this.setState({ errorMsg: 'Your Username is too short' })
+      }
     }
     const handleConfirmChange = (event) => {
       this.setState({ confirmValue: event.target.value })
     }
-    const handleClick = () => {
-      console.log(this.state.idValue + ' - ' + this.state.confirmValue)
+    const handleSubmit = () => {
+      this.state.submitFunc(this.state)
     }
     return (
       <Paper>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label for="idField">{this.state.idHolder}:</label>
           <input name="idField"
                  type="text"
                  placeholder={this.state.idHolder}
-                 onChange={handleIDChange}/>
+                 onChange={handleIDChange}
+                 pattern=".{8,20}"
+                 title={this.state.errorMsg}
+          />
           <br/>
           <label for="confirm">{this.state.confirmHolder}:</label>
           <input name="confirm"
@@ -43,7 +54,7 @@ export default class extends Component {
                  onChange={handleConfirmChange}/>
           <br/>
           <RaisedButton label={this.state.buttonText}
-                        onClick={handleClick}/>
+                        type="submit"/>
         </form>
       </Paper>
     )
